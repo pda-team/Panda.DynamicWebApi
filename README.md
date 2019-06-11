@@ -92,7 +92,7 @@ public void ConfigureServices(IServiceCollection services)
 
 （6）运行
 
-运行浏览器以后访问 `<你的项目地址>/swagger/index.html`，将会看到为我们 `AppleService` 生成的 WebApi
+运行浏览器以后访问 `<你的项目地址>/swagger/index.html`，将会看到为我们 `AppleAppService` 生成的 WebApi
 
 ![1560265120580](assets/1560265120580.png)
 
