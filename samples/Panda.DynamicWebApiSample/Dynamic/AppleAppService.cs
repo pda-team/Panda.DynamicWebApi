@@ -4,7 +4,7 @@ using Panda.DynamicWebApiSample.Dtos;
 
 namespace Panda.DynamicWebApiSample.Dynamic
 {
-    public class AppleAppService: ISampleWebApi
+    public class AppleAppService: IApplicationService
     {
         private static readonly Dictionary<int,string> Apples=new Dictionary<int, string>()
         {
@@ -39,20 +39,18 @@ namespace Panda.DynamicWebApiSample.Dynamic
             return Apples.Values;
         }
 
-        /// <summary>
-        /// Update apple name.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="dto"></param>
-        [HttpPatch("{id:int}")]
-        public void UpdateName(int id,UpdateAppleDto dto)
+        public void Update(UpdateAppleDto dto)
         {
-            if (Apples.ContainsKey(id))
+            if (Apples.ContainsKey(dto.Id))
             {
-                Apples[id]=dto.Name;
+                Apples[dto.Id] =dto.Name;
             }
         }
 
+        /// <summary>
+        /// Delete Apple
+        /// </summary>
+        /// <param name="id">Apple Id</param>
         [HttpDelete("{id:int}")]
         public void Delete(int id)
         {

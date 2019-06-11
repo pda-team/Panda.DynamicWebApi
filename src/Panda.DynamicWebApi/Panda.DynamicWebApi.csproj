@@ -3,14 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <Description>ASP.NET Core Dynamic WebApi. Generating WebApi from Classes.</Description>
-    <PackageLicenseExpression>https://github.com/dotnetauth/Panda.DynamicWebApi/blob/master/LICENSE</PackageLicenseExpression>
+    <Description>ASP.NET Core Dynamic Restful WebApi. Generating WebApi from Classes. Such as: Direct Generation of WebApi Based on Business Logic Layer.</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/dotnetauth/Panda.DynamicWebApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dotnetauth/Panda.DynamicWebApi</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
     <Authors>stulzq,staneee</Authors>
     <Version>0.0.1</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,6 +22,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
