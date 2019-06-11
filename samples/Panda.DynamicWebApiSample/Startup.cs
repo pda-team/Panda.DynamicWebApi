@@ -37,7 +37,7 @@ namespace Panda.DynamicWebApiSample
                     return true;
                 });
 
-                options.IncludeXmlComments(@"bin\Debug\netstandard2.0\Panda.DynamicWebApiSample.xml");
+                options.IncludeXmlComments(@"bin\Debug\netstandard2.2\Panda.DynamicWebApiSample.xml");
             });
             services.AddDynamicWebApi(new DynamicWebApiOptions(){ApiAssemblies = new List<Assembly>(){ this.GetType().Assembly } });
         }
