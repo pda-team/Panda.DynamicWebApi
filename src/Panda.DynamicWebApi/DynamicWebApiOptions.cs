@@ -11,13 +11,8 @@ namespace Panda.DynamicWebApi
         {
             ApiRemovePostfixes=new List<string>(){ "AppService", "ApplicationService" };
             FormBodyBindingIgnoredTypes=new List<Type>(){typeof(IFormFile)};
-            ApiAssemblies = new List<Assembly>();
         }
 
-        /// <summary>
-        /// Assemblies that need to dynamically generate APIs.
-        /// </summary>
-        public List<Assembly> ApiAssemblies { get; set; }
 
         /// <summary>
         /// API HTTP Verb.
@@ -71,11 +66,6 @@ namespace Panda.DynamicWebApi
             if (ApiRemovePostfixes == null)
             {
                 throw new ArgumentException($"{nameof(ApiRemovePostfixes)} can not be null.");
-            }
-
-            if (ApiAssemblies == null)
-            {
-                throw new ArgumentException($"{nameof(ApiAssemblies)} can not be null.");
             }
         }
     }

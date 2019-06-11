@@ -44,11 +44,6 @@ namespace Panda.DynamicWebApi
             // Add a custom controller checker
             partManager.FeatureProviders.Add(new DynamicWebApiControllerFeatureProvider());
 
-            // Register the assembly to the checklist
-            foreach (var asmType in options.ApiAssemblies)
-            {
-                RegisterApplicationAssembly(partManager, asmType);
-            }
             services.Configure<MvcOptions>(o =>
             {
                 // Register Controller Routing Information Converter
@@ -58,43 +53,10 @@ namespace Panda.DynamicWebApi
             return services;
         }
 
-
-        /// <summary>
-        /// Inject all Controller, Application Service in the assembly where type T resides into the container
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="services"></param>
-        private static void RegisterControllersAndApplicationServices<T>(IServiceCollection services)
-            where T : class
+        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services)
         {
-            var controllerType = (typeof(Controller));
-            var applicationServiceType = typeof(IDynamicWebApi);
-
-            var allTypes = typeof(T).Assembly.GetTypes();
-            foreach (var item in allTypes)
-            {
-                if (!item.IsPublic || item.IsSealed || item.IsAbstract)
-                {
-                    continue;
-                }
-
-                if (item.IsSubclassOf(controllerType))
-                {
-                    services.AddTransient(item);
-                }
-                if (applicationServiceType.IsAssignableFrom(item))
-                {
-                    services.AddTransient(item);
-                }
-            }
+            return AddDynamicWebApi(services, new DynamicWebApiOptions());
         }
 
-        /// <summary>
-        /// Inject the assembly of type T into the scan list
-        /// </summary>
-        private static void RegisterApplicationAssembly(ApplicationPartManager applicationPartManager, Assembly asm)
-        {
-            applicationPartManager.ApplicationParts.Add(new AssemblyPart(asm));
-        }
     }
 }

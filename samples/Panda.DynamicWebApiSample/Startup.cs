@@ -39,7 +39,7 @@ namespace Panda.DynamicWebApiSample
 
                 options.IncludeXmlComments(@"bin\Debug\netcoreapp2.2\Panda.DynamicWebApiSample.xml");
             });
-            services.AddDynamicWebApi(new DynamicWebApiOptions(){ApiAssemblies = new List<Assembly>(){ this.GetType().Assembly } });
+            services.AddDynamicWebApi();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

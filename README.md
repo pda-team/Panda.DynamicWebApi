@@ -84,7 +84,7 @@ public class AppleAppService: IDynamicWebApi
 ````csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddDynamicWebApi(new DynamicWebApiOptions(){ApiAssemblies = new List<Assembly>(){ this.GetType().Assembly } });
+    services.AddDynamicWebApi();
 }
 ````
 
@@ -142,7 +142,6 @@ public void ConfigureServices(IServiceCollection services)
 
 | 属性名                      | 是否必须 | 说明                                                      |
 | --------------------------- | -------- | --------------------------------------------------------- |
-| ApiAssemblies               | 是       | 要生成API的类所在的程序集（MVC框架需要扫描）              |
 | DefaultHttpVerb             | 否       | 默认值：POST。默认HTTP动词                                |
 | DefaultAreaName             | 否       | 默认值：空。Area 路由名称                                 |
 | DefaultApiPreFix            | 否       | 默认值：api。API路由前缀                                  |
