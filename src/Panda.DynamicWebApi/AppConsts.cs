@@ -22,6 +22,7 @@ namespace Panda.DynamicWebApi
         {
             HttpVerbs=new Dictionary<string, string>()
             {
+                ["Add"]="POST",
                 ["create"]="POST",
                 ["post"]="POST",
 
