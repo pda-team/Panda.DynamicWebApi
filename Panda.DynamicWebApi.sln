@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panda.DynamicWebApi", "src\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj", "{08AA6AB6-3A60-4806-892C-25248B11FBE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1F23CF3B-77BD-4D65-867B-31F6ADD54789}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2892E206-E3D4-479E-9BA3-AD636839CA9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panda.DynamicWebApiSample", "samples\Panda.DynamicWebApiSample\Panda.DynamicWebApiSample.csproj", "{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08AA6AB6-3A60-4806-892C-25248B11FBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08AA6AB6-3A60-4806-892C-25248B11FBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08AA6AB6-3A60-4806-892C-25248B11FBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08AA6AB6-3A60-4806-892C-25248B11FBE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{08AA6AB6-3A60-4806-892C-25248B11FBE3} = {1F23CF3B-77BD-4D65-867B-31F6ADD54789}
+		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2} = {2892E206-E3D4-479E-9BA3-AD636839CA9B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF8BD8DF-F990-49F9-B5FE-7003FC8A139E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <Description>ASP.NET Core Dynamic WebApi. Generating WebApi from Classes.</Description>
+    <PackageLicenseExpression>https://github.com/dotnetauth/Panda.DynamicWebApi/blob/master/LICENSE</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dotnetauth/Panda.DynamicWebApi</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotnetauth/Panda.DynamicWebApi</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
+    <Authors>stulzq,staneee</Authors>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Panda.DynamicWebApi.xml</DocumentationFile>
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>
