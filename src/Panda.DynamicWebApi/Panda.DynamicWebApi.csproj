@@ -10,7 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
     <Authors>stulzq,staneee</Authors>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
