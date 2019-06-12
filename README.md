@@ -1,5 +1,7 @@
 # Panda.DynamicWebApi
 
+Language: English | [中文](README_zh-CN.md)
+
 `Panda.DynamicWebApi`  is a component that dynamically generates WebApi. The generated API conforms to the Restful style and is inspired by ABP. It can generate WebApi based on qualified classes. The logic is directly called by the MVC framework. There is no performance problem. It is perfectly compatible with Swagger to build the API documentation. There is no difference compared with manually writing the Controller.
 
 Application Scenario: The application logic layer in the DDD architecture, which can be used to directly generate WebApi without using the Controller.
