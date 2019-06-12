@@ -136,6 +136,8 @@ public void ConfigureServices(IServiceCollection services)
 
 ...
 
+（9）`[DynamicWebApi]` 特性因为可被继承，所以为了避免意外状况，禁止放在**父类**，但可放在该类的**接口**、或者继承的**抽象类**上。
+
 ## 3.配置
 
 所有的配置均在对象 `DynamicWebApiOptions` 中，说明如下：
