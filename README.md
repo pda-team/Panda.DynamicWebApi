@@ -156,4 +156,5 @@ public void ConfigureServices(IServiceCollection services)
 
 > 本项目直接或间接引用了以下项目
 
-- [ABP Vnext](https://github.com/abpframework/abp)
+- [ABP](https://github.com/aspnetboilerplate/aspnetboilerplate)
+
