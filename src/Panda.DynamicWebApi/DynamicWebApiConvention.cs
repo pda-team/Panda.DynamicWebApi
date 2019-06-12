@@ -229,7 +229,7 @@ namespace Panda.DynamicWebApi
                 }
                 else
                 {
-                    return actionName.Substring(verbKey.Length - 1);
+                    return actionName.Substring(verbKey.Length);
                 }
             }
             else

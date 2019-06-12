@@ -42,6 +42,15 @@ namespace Panda.DynamicWebApiSample.Dynamic
             return Apples.Values;
         }
 
+        /// <summary>
+        /// Get All Apple.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetBigApple()
+        {
+            return Apples.Values;
+        }
+
         public void Update(UpdateAppleDto dto)
         {
             if (Apples.ContainsKey(dto.Id))

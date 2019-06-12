@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Panda.DynamicWebApiSample.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\Panda.DynamicWebApiSample.xml</DocumentationFile>
     <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
 
