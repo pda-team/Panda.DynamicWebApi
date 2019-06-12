@@ -12,7 +12,8 @@ namespace Panda.DynamicWebApi
  
         public static string DefaultApiPreFix { get; set; }
 
-        public static List<string> CommonPostfixes { get; set; }
+        public static List<string> ControllerPostfixes { get; set; }
+        public static List<string> ActionPostfixes { get; set; }
 
         public static List<Type> FormBodyBindingIgnoredTypes { get; set; }
 

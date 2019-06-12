@@ -9,7 +9,8 @@ namespace Panda.DynamicWebApi
     {
         public DynamicWebApiOptions()
         {
-            ApiRemovePostfixes=new List<string>(){ "AppService", "ApplicationService" };
+            RemoveControllerPostfixes=new List<string>(){ "AppService", "ApplicationService" };
+            RemoveActionPostfixes = new List<string>(){ "Async"};
             FormBodyBindingIgnoredTypes=new List<Type>(){typeof(IFormFile)};
         }
 
@@ -28,19 +29,30 @@ namespace Panda.DynamicWebApi
         /// <para></para>
         /// Default value is "api".
         /// </summary>
-        public string DefaultApiPreFix { get; set; } = "api";
+        public string DefaultApiPrefix { get; set; } = "api";
 
         /// <summary>
-        /// Remove the dynamic API class name suffix.
+        /// Remove the dynamic API class(Controller) name postfix.
+        /// <para></para>
+        /// Default value is {"AppService", "ApplicationService"}.
         /// </summary>
-        public List<string> ApiRemovePostfixes { get; set; }
+        public List<string> RemoveControllerPostfixes { get; set; }
+
+        /// <summary>
+        /// Remove the dynamic API class's method(Action) postfix.
+        /// <para></para>
+        /// Default value is {"Async"}.
+        /// </summary>
+        public List<string> RemoveActionPostfixes { get; set; }
 
         /// <summary>
         /// Ignore MVC Form Binding types.
         /// </summary>
         public List<Type> FormBodyBindingIgnoredTypes { get; set; }
 
-
+        /// <summary>
+        /// Verify that all configurations are valid
+        /// </summary>
         public void Valid()
         {
             if (string.IsNullOrEmpty(DefaultHttpVerb))
@@ -53,9 +65,9 @@ namespace Panda.DynamicWebApi
                 DefaultAreaName = string.Empty;
             }
 
-            if (string.IsNullOrEmpty(DefaultApiPreFix))
+            if (string.IsNullOrEmpty(DefaultApiPrefix))
             {
-                DefaultApiPreFix = string.Empty;
+                DefaultApiPrefix = string.Empty;
             }
 
             if (FormBodyBindingIgnoredTypes==null)
@@ -63,9 +75,9 @@ namespace Panda.DynamicWebApi
                 throw new ArgumentException($"{nameof(FormBodyBindingIgnoredTypes)} can not be null.");
             }
 
-            if (ApiRemovePostfixes == null)
+            if (RemoveControllerPostfixes == null)
             {
-                throw new ArgumentException($"{nameof(ApiRemovePostfixes)} can not be null.");
+                throw new ArgumentException($"{nameof(RemoveControllerPostfixes)} can not be null.");
             }
         }
     }

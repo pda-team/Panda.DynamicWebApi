@@ -34,6 +34,15 @@ namespace Panda.DynamicWebApiSample.Dynamic
         }
 
         /// <summary>
+        /// Get  All Apple Async.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetAllAsync()
+        {
+            return Apples.Values;
+        }
+
+        /// <summary>
         /// Get All Apple.
         /// </summary>
         /// <returns></returns>

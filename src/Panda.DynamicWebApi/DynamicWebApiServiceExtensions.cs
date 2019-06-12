@@ -30,8 +30,9 @@ namespace Panda.DynamicWebApi
 
             AppConsts.DefaultAreaName = options.DefaultAreaName;
             AppConsts.DefaultHttpVerb = options.DefaultHttpVerb;
-            AppConsts.DefaultApiPreFix = options.DefaultApiPreFix;
-            AppConsts.CommonPostfixes = options.ApiRemovePostfixes;
+            AppConsts.DefaultApiPreFix = options.DefaultApiPrefix;
+            AppConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
+            AppConsts.ActionPostfixes = options.RemoveActionPostfixes;
             AppConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
 
             var partManager = services.GetSingletonInstanceOrNull<ApplicationPartManager>();

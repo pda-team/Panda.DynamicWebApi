@@ -146,8 +146,9 @@ public void ConfigureServices(IServiceCollection services)
 | --------------------------- | -------- | --------------------------------------------------------- |
 | DefaultHttpVerb             | 否       | 默认值：POST。默认HTTP动词                                |
 | DefaultAreaName             | 否       | 默认值：空。Area 路由名称                                 |
-| DefaultApiPreFix            | 否       | 默认值：api。API路由前缀                                  |
-| ApiRemovePostfixes          | 否       | 默认值：AppService/ApplicationService。类名需要移除的后缀 |
+| DefaultApiPrefix            | 否       | 默认值：api。API路由前缀                                  |
+| RemoveControllerPostfixes          | 否       | 默认值：AppService/ApplicationService。类名需要移除的后缀 |
+| RemoveActionPostfixes          | 否       | 默认值：Async。方法名需要移除的后缀 |
 | FormBodyBindingIgnoredTypes | 否       | 默认值：IFormFile。不通过MVC绑定到参数列表的类型。        |
 
 ## 4.疑难解答

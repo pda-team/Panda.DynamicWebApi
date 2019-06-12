@@ -29,7 +29,7 @@ namespace Panda.DynamicWebApi
                 var dynamicWebApiAttr = ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<DynamicWebApiAttribute>(type.GetTypeInfo());
                 if (typeof(IDynamicWebApi).GetTypeInfo().IsAssignableFrom(type))
                 {
-                    controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.CommonPostfixes.ToArray());
+                    controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
                     ConfigureArea(controller, dynamicWebApiAttr);
                     ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                 }
@@ -218,8 +218,17 @@ namespace Panda.DynamicWebApi
             action.Selectors.Add(appServiceSelectorModel);
         }
 
+        /// <summary>
+        /// Processing action name
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
         private static string GetRestFulActionName(string actionName)
         {
+            // Remove Postfix
+            actionName = actionName.RemovePostFix(AppConsts.ActionPostfixes.ToArray());
+
+            // Remove Prefix
             var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
             if (AppConsts.HttpVerbs.ContainsKey(verbKey))
             {
