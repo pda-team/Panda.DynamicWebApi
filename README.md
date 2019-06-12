@@ -100,7 +100,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ## 2.更进一步
 
-（1）要让类生成动态API需要满足两个条件，一个是该类**直接**或**间接**实现 `IDynamicWebApi`，同时该类**本身**或者**父类**或者**实现的接口**具有特性 `DynamicWebApi`
+（1）要让类生成动态API需要满足两个条件，一个是该类**直接**或**间接**实现 `IDynamicWebApi`，同时该类**本身**或者**父抽象类**或者**实现的接口**具有特性 `DynamicWebApi`
 
 （2）添加特性 `[NonDynamicWebApi]` 可使一个类或者一个方法不生成API，`[NonDynamicWebApi]` 具有最高的优先级。
 
@@ -136,7 +136,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ...
 
-（9）`[DynamicWebApi]` 特性因为可被继承，所以为了避免意外状况，禁止放在**父类**，但可放在该类的**接口**、或者继承的**抽象类**上。
+（9）`[DynamicWebApi]` 特性因为可被继承，所以为了父类被误识别，禁止放在除抽象类、接口以外的父类上。
 
 ## 3.配置
 
