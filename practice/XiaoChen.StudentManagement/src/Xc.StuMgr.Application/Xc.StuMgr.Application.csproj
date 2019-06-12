@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\OpenSource\Panda.DynamicWebApi\src\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj" />
   </ItemGroup>
 
 </Project>
