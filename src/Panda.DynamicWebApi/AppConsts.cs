@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Panda.DynamicWebApi
 {
-    internal static class AppConsts
+    public static class AppConsts
     {
         public static string DefaultHttpVerb { get; set; }
 
@@ -17,7 +17,7 @@ namespace Panda.DynamicWebApi
 
         public static List<Type> FormBodyBindingIgnoredTypes { get; set; }
 
-        public static Dictionary<string,string> HttpVerbs { get; }
+        public static Dictionary<string,string> HttpVerbs { get; set; }
 
         static AppConsts()
         {
