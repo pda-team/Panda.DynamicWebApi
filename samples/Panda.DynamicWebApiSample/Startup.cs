@@ -22,7 +22,7 @@ namespace Panda.DynamicWebApiSample
         public void ConfigureServices(IServiceCollection services)
         {
 //            services.AddMvc().AddNewtonsoftJson().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>

@@ -10,7 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
     <Authors>stulzq,staneee</Authors>
-    <Version>1.0.0-preview</Version>
+    <Version>1.0.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes>Support .NET Core 3.0. This version only supports. net core 3.0.</PackageReleaseNotes>
   </PropertyGroup>
