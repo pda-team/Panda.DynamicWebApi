@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Panda.DynamicWebApi;
 using Panda.DynamicWebApi.Attributes;
@@ -7,6 +8,7 @@ using Panda.DynamicWebApiSample.Dtos;
 namespace Panda.DynamicWebApiSample.Dynamic
 {
     [DynamicWebApi]
+    [Authorize]
     public class AppleAppService: IDynamicWebApi
     {
         private static readonly Dictionary<int,string> Apples=new Dictionary<int, string>()

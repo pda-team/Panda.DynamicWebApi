@@ -1,9 +1,12 @@
 ﻿
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Panda.DynamicWebApi;
 
@@ -21,7 +24,6 @@ namespace Panda.DynamicWebApiSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-//            services.AddMvc().AddNewtonsoftJson().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllers().AddNewtonsoftJson();
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
@@ -30,15 +32,25 @@ namespace Panda.DynamicWebApiSample
                 options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Panda Dynamic WebApi", Version = "v1" });
 
                 // TODO:一定要返回true！
-                options.DocInclusionPredicate((docName, description) =>
-                {
-                    return true;
-                });
+                options.DocInclusionPredicate((docName, description) => true);
 
-                options.IncludeXmlComments(@"bin\Debug\netcoreapp2.2\Panda.DynamicWebApiSample.xml");
+                var baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                var xmlFile = System.AppDomain.CurrentDomain.FriendlyName + ".xml";
+                var xmlPath = Path.Combine(baseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://www.google.com";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "Panda-Api";
+                });
             services.AddDynamicWebApi();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +62,8 @@ namespace Panda.DynamicWebApiSample
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

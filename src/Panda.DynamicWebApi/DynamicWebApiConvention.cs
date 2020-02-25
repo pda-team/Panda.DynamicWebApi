@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -25,7 +26,6 @@ namespace Panda.DynamicWebApi
             foreach (var controller in application.Controllers)
             {
                 var type = controller.ControllerType.AsType();
-
                 var dynamicWebApiAttr = ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<DynamicWebApiAttribute>(type.GetTypeInfo());
                 if (typeof(IDynamicWebApi).GetTypeInfo().IsAssignableFrom(type))
                 {
@@ -39,6 +39,22 @@ namespace Panda.DynamicWebApi
                     {
                         ConfigureArea(controller, dynamicWebApiAttr);
                         ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
+                    }
+                }
+
+                var actions = controller.Actions.ToArray();
+                foreach (var action in actions)
+                {
+                    // ToArray is needed here to prevent issues with modifying the attributes collection
+                    // while iterating it.
+                    var actionConventions =
+                        action.Attributes
+                            .OfType<IActionModelConvention>()
+                            .ToArray();
+
+                    foreach (var actionConvention in actionConventions)
+                    {
+                        actionConvention.Apply(action);
                     }
                 }
             }
@@ -71,6 +87,7 @@ namespace Panda.DynamicWebApi
             ConfigureSelector(controller, controllerAttr);
             ConfigureParameters(controller);
         }
+
 
         private void ConfigureParameters(ControllerModel controller)
         {
@@ -111,6 +128,7 @@ namespace Panda.DynamicWebApi
 
                 foreach (var actionConstraint in selector.ActionConstraints)
                 {
+                    
                     var httpMethodActionConstraint = actionConstraint as HttpMethodActionConstraint;
                     if (httpMethodActionConstraint == null)
                     {
@@ -212,7 +230,6 @@ namespace Panda.DynamicWebApi
             {
                 AttributeRouteModel = CreateActionRouteModel(areaName, controllerName, action.ActionName)
             };
-
             appServiceSelectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { verb }));
 
             action.Selectors.Add(appServiceSelectorModel);
@@ -275,7 +292,7 @@ namespace Panda.DynamicWebApi
 
         private static bool IsEmptySelector(SelectorModel selector)
         {
-            return selector.AttributeRouteModel == null && selector.ActionConstraints.IsNullOrEmpty();
+            return selector.AttributeRouteModel == null && selector.ActionConstraints.IsNullOrEmpty()&&selector.EndpointMetadata.IsNullOrEmpty();
         }
     }
 }
