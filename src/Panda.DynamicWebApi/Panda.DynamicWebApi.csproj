@@ -10,7 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
     <Authors>stulzq,staneee</Authors>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes>Fix authorize invalid.</PackageReleaseNotes>
   </PropertyGroup>
