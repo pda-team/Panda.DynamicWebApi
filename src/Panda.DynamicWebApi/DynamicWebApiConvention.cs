@@ -41,22 +41,7 @@ namespace Panda.DynamicWebApi
                         ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                     }
                 }
-
-                var actions = controller.Actions.ToArray();
-                foreach (var action in actions)
-                {
-                    // ToArray is needed here to prevent issues with modifying the attributes collection
-                    // while iterating it.
-                    var actionConventions =
-                        action.Attributes
-                            .OfType<IActionModelConvention>()
-                            .ToArray();
-
-                    foreach (var actionConvention in actionConventions)
-                    {
-                        actionConvention.Apply(action);
-                    }
-                }
+               
             }
         }
 
