@@ -86,7 +86,7 @@ namespace Panda.DynamicWebApiSample.Dynamic
         }
 
         [AllowAnonymous]
-        [HttpPost("[action]")]
+        [HttpPost("UpdateAppleAsync")]
         public async Task UpdateAppleAsync(UpdateAppleDto dto)
         {
             await Task.Run(() =>
