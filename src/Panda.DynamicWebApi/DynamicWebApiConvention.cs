@@ -163,7 +163,6 @@ namespace Panda.DynamicWebApi
 
         private void ConfigureSelector(ControllerModel controller, DynamicWebApiAttribute controllerAttr)
         {
-            RemoveEmptySelectors(controller.Selectors);
 
             if (controller.Selectors.Any(selector => selector.AttributeRouteModel != null))
             {
@@ -185,7 +184,6 @@ namespace Panda.DynamicWebApi
 
         private void ConfigureSelector(string areaName, string controllerName, ActionModel action)
         {
-            RemoveEmptySelectors(action.Selectors);
 
             var nonAttr = ReflectionHelper.GetSingleAttributeOrDefault<NonDynamicWebApiAttribute>(action.ActionMethod);
 
@@ -194,7 +192,7 @@ namespace Panda.DynamicWebApi
                 return;
             }
 
-            if (!action.Selectors.Any())
+            if (action.Selectors.IsNullOrEmpty()||action.Selectors.Any(a=>a.ActionConstraints.IsNullOrEmpty()))
             {
                 AddAppServiceSelector(areaName,controllerName, action);
             }
@@ -206,19 +204,44 @@ namespace Panda.DynamicWebApi
 
         private void AddAppServiceSelector(string areaName, string controllerName, ActionModel action)
         {
-            string verb;
             var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
+            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
 
             action.ActionName = GetRestFulActionName(action.ActionName);
-            var appServiceSelectorModel = new SelectorModel
-            {
-                AttributeRouteModel = CreateActionRouteModel(areaName, controllerName, action.ActionName)
-            };
-            appServiceSelectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { verb }));
 
-            action.Selectors.Add(appServiceSelectorModel);
+            var appServiceSelectorModel= action.Selectors[0];
+
+            if (appServiceSelectorModel.AttributeRouteModel==null)
+            {
+                appServiceSelectorModel.AttributeRouteModel = CreateActionRouteModel(areaName, controllerName, action);
+            }
+
+            if (!appServiceSelectorModel.ActionConstraints.Any())
+            {
+                appServiceSelectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { verb }));
+                switch (verb)
+                {
+                    case "GET":
+                        appServiceSelectorModel.EndpointMetadata.Add(new HttpGetAttribute());
+                        break;
+                    case "POST":
+                        appServiceSelectorModel.EndpointMetadata.Add(new HttpPostAttribute());
+                        break;
+                    case "PUT":
+                        appServiceSelectorModel.EndpointMetadata.Add(new HttpPutAttribute());
+                        break;
+                    case "DELETE":
+                        appServiceSelectorModel.EndpointMetadata.Add(new HttpDeleteAttribute());
+                        break;
+                    default:
+                        throw new Exception($"Unsupported http verb: {verb}.");
+                }
+            }
+
+            
         }
+
+
 
         /// <summary>
         /// Processing action name
@@ -255,29 +278,16 @@ namespace Panda.DynamicWebApi
             foreach (var selector in action.Selectors)
             {
                 selector.AttributeRouteModel = selector.AttributeRouteModel == null ? 
-                    CreateActionRouteModel(areaName, controllerName, action.ActionName) : 
-                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName,controllerName,""), selector.AttributeRouteModel);
+                    CreateActionRouteModel(areaName, controllerName, action) : 
+                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName,controllerName,action), selector.AttributeRouteModel);
             }
         }
 
-        private static AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, string actionName)
+        private static AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
         {
             var routeStr =
-                $"{AppConsts.DefaultApiPreFix}/{areaName}/{controllerName}/{actionName}".Replace("//", "/");
+                $"{AppConsts.DefaultApiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
             return new AttributeRouteModel(new RouteAttribute(routeStr));
-        }
-
-        private static void RemoveEmptySelectors(IList<SelectorModel> selectors)
-        {
-            selectors
-                .Where(IsEmptySelector)
-                .ToList()
-                .ForEach(s => selectors.Remove(s));
-        }
-
-        private static bool IsEmptySelector(SelectorModel selector)
-        {
-            return selector.AttributeRouteModel == null && selector.ActionConstraints.IsNullOrEmpty()&&selector.EndpointMetadata.IsNullOrEmpty();
         }
     }
 }

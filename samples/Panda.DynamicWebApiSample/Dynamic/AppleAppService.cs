@@ -10,14 +10,26 @@ using Panda.DynamicWebApiSample.Dtos;
 namespace Panda.DynamicWebApiSample.Dynamic
 {
     [DynamicWebApi]
-    [Authorize]
+    // [Authorize]
     public class AppleAppService: IDynamicWebApi
     {
-        private static readonly Dictionary<int,string> Apples=new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> Apples = new Dictionary<int, string>()
         {
-            [1]="Big Apple",
-            [2]="Small Apple"
+            [1] = "Big Apple",
+            [2] = "Small Apple"
         };
+
+        [AllowAnonymous]
+        public async Task UpdateAppleAsync(UpdateAppleDto dto)
+        {
+            await Task.Run(() => {
+                if (Apples.ContainsKey(dto.Id))
+                {
+                    Apples[dto.Id] = dto.Name;
+                }
+            });
+
+        }
 
         /// <summary>
         /// Get An Apple.
@@ -83,19 +95,6 @@ namespace Panda.DynamicWebApiSample.Dynamic
             {
                 Apples.Remove(id);
             }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("UpdateAppleAsync")]
-        public async Task UpdateAppleAsync(UpdateAppleDto dto)
-        {
-            await Task.Run(() =>
-            {
-                if (Apples.ContainsKey(dto.Id))
-                {
-                    Apples[dto.Id] = dto.Name;
-                }
-            });
         }
 
     }
