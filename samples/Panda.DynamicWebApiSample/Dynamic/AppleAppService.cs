@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Panda.DynamicWebApi;
@@ -81,6 +83,19 @@ namespace Panda.DynamicWebApiSample.Dynamic
             {
                 Apples.Remove(id);
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task UpdateAppleAsync(UpdateAppleDto dto)
+        {
+            await Task.Run(() =>
+            {
+                if (Apples.ContainsKey(dto.Id))
+                {
+                    Apples[dto.Id] = dto.Name;
+                }
+            });
         }
 
     }
