@@ -10,13 +10,24 @@
         /// <para></para>
         /// Default value is "api".
         /// </summary>
-        public string ApiPrefix { get; set; }
+        public string ApiPrefix { get; }
 
         /// <summary>
         /// API HTTP Verb.
         /// <para></para>
         /// Default value is "POST".
         /// </summary>
-        public string HttpVerb { get; set; }
+        public string HttpVerb { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="apiPrefix">Routing prefix for all APIs</param>
+        /// <param name="httpVerb">API HTTP Verb.</param>
+        public AssemblyDynamicWebApiOptions(string apiPrefix, string httpVerb)
+        {
+            ApiPrefix = apiPrefix;
+            HttpVerb = httpVerb;
+        }
     }
 }
