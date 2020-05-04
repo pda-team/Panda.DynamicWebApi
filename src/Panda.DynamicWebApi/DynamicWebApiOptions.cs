@@ -51,6 +51,11 @@ namespace Panda.DynamicWebApi
         public List<Type> FormBodyBindingIgnoredTypes { get; set; }
 
         /// <summary>
+        /// Gets the name of the action.
+        /// </summary>
+        public Func<string, string> GetActionName { get; set; }
+
+        /// <summary>
         /// Verify that all configurations are valid
         /// </summary>
         public void Valid()

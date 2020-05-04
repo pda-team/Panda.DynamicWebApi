@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Panda.DynamicWebApi.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace Panda.DynamicWebApi
@@ -18,6 +19,8 @@ namespace Panda.DynamicWebApi
 
         public static Dictionary<string,string> HttpVerbs { get; set; }
 
+        public static Func<string, string> GetActionName { get; set; }
+
         static AppConsts()
         {
             HttpVerbs=new Dictionary<string, string>()
@@ -36,6 +39,26 @@ namespace Panda.DynamicWebApi
 
                 ["delete"] = "DELETE",
                 ["remove"] = "DELETE",
+            };
+
+            GetActionName = (actionName) =>
+            {
+                var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
+                if (AppConsts.HttpVerbs.ContainsKey(verbKey))
+                {
+                    if (actionName.Length == verbKey.Length)
+                    {
+                        return "";
+                    }
+                    else
+                    {
+                        return actionName.Substring(verbKey.Length);
+                    }
+                }
+                else
+                {
+                    return actionName;
+                }
             };
         }
     }
