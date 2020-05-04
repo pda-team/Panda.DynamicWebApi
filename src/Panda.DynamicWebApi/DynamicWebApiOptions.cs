@@ -61,7 +61,7 @@ namespace Panda.DynamicWebApi
         /// <summary>
         /// Specifies the dynamic webapi options for the assembly.
         /// </summary>
-        public Dictionary<Assembly, AssemblyDynamicWebApiOptions> AssemblyDynamicWebApiOptions { get; set; }
+        public Dictionary<Assembly, AssemblyDynamicWebApiOptions> AssemblyDynamicWebApiOptions { get; }
 
         /// <summary>
         /// Verify that all configurations are valid
@@ -92,12 +92,22 @@ namespace Panda.DynamicWebApi
             {
                 throw new ArgumentException($"{nameof(RemoveControllerPostfixes)} can not be null.");
             }
+        }
 
-            if (AssemblyDynamicWebApiOptions == null)
+        /// <summary>
+        /// Add the dynamic webapi options for the assembly.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="apiPreFix"></param>
+        /// <param name="httpVerb"></param>
+        public void AddAssembly(Assembly assembly, string apiPreFix = null, string httpVerb = null)
+        {
+            if (assembly == null)
             {
-                throw new ArgumentException($"{nameof(AssemblyDynamicWebApiOptions)} can not be null.");
+                throw new ArgumentException($"{nameof(assembly)} can not be null.");
             }
 
+            this.AssemblyDynamicWebApiOptions[assembly] = new AssemblyDynamicWebApiOptions(apiPreFix, httpVerb);
         }
     }
 }
