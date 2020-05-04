@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="apiPrefix">Routing prefix for all APIs</param>
         /// <param name="httpVerb">API HTTP Verb.</param>
-        public AssemblyDynamicWebApiOptions(string apiPrefix, string httpVerb)
+        public AssemblyDynamicWebApiOptions(string apiPrefix = "api", string httpVerb = null)
         {
             ApiPrefix = apiPrefix;
             HttpVerb = httpVerb;
