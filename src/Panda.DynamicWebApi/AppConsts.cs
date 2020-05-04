@@ -19,7 +19,7 @@ namespace Panda.DynamicWebApi
 
         public static Dictionary<string,string> HttpVerbs { get; set; }
 
-        public static Func<string, string> GetActionName { get; set; }
+        public static Func<string, string> GetRestFulActionName { get; set; }
 
         static AppConsts()
         {
@@ -39,26 +39,6 @@ namespace Panda.DynamicWebApi
 
                 ["delete"] = "DELETE",
                 ["remove"] = "DELETE",
-            };
-
-            GetActionName = (actionName) =>
-            {
-                var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
-                if (AppConsts.HttpVerbs.ContainsKey(verbKey))
-                {
-                    if (actionName.Length == verbKey.Length)
-                    {
-                        return "";
-                    }
-                    else
-                    {
-                        return actionName.Substring(verbKey.Length);
-                    }
-                }
-                else
-                {
-                    return actionName;
-                }
             };
         }
     }
