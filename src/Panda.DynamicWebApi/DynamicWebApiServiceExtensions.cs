@@ -19,7 +19,7 @@ namespace Panda.DynamicWebApi
         /// <param name="services"></param>
         /// <param name="options">configuration</param>
         /// <returns></returns>
-        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services,DynamicWebApiOptions options)
+        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services, DynamicWebApiOptions options)
         {
             if (options == null)
             {

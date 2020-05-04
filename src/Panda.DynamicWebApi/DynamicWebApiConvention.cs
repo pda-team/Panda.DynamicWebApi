@@ -13,7 +13,7 @@ using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi
 {
-    public class DynamicWebApiConvention: IApplicationModelConvention
+    public class DynamicWebApiConvention : IApplicationModelConvention
     {
         private readonly IServiceCollection _services;
         public DynamicWebApiConvention(IServiceCollection services)
@@ -41,11 +41,11 @@ namespace Panda.DynamicWebApi
                         ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                     }
                 }
-               
+
             }
         }
 
-        private void ConfigureArea(ControllerModel controller,DynamicWebApiAttribute attr)
+        private void ConfigureArea(ControllerModel controller, DynamicWebApiAttribute attr)
         {
             if (attr == null)
             {
@@ -113,7 +113,7 @@ namespace Panda.DynamicWebApi
 
                 foreach (var actionConstraint in selector.ActionConstraints)
                 {
-                    
+
                     var httpMethodActionConstraint = actionConstraint as HttpMethodActionConstraint;
                     if (httpMethodActionConstraint == null)
                     {
@@ -178,7 +178,7 @@ namespace Panda.DynamicWebApi
 
             foreach (var action in controller.Actions)
             {
-                ConfigureSelector(areaName,controller.ControllerName, action);
+                ConfigureSelector(areaName, controller.ControllerName, action);
             }
         }
 
@@ -192,13 +192,13 @@ namespace Panda.DynamicWebApi
                 return;
             }
 
-            if (action.Selectors.IsNullOrEmpty()||action.Selectors.Any(a=>a.ActionConstraints.IsNullOrEmpty()))
+            if (action.Selectors.IsNullOrEmpty() || action.Selectors.Any(a => a.ActionConstraints.IsNullOrEmpty()))
             {
-                AddAppServiceSelector(areaName,controllerName, action);
+                AddAppServiceSelector(areaName, controllerName, action);
             }
             else
             {
-                NormalizeSelectorRoutes(areaName,controllerName, action);
+                NormalizeSelectorRoutes(areaName, controllerName, action);
             }
         }
 
@@ -209,9 +209,9 @@ namespace Panda.DynamicWebApi
 
             action.ActionName = GetRestFulActionName(action.ActionName);
 
-            var appServiceSelectorModel= action.Selectors[0];
+            var appServiceSelectorModel = action.Selectors[0];
 
-            if (appServiceSelectorModel.AttributeRouteModel==null)
+            if (appServiceSelectorModel.AttributeRouteModel == null)
             {
                 appServiceSelectorModel.AttributeRouteModel = CreateActionRouteModel(areaName, controllerName, action);
             }
@@ -238,7 +238,7 @@ namespace Panda.DynamicWebApi
                 }
             }
 
-            
+
         }
 
 
@@ -277,9 +277,9 @@ namespace Panda.DynamicWebApi
             action.ActionName = GetRestFulActionName(action.ActionName);
             foreach (var selector in action.Selectors)
             {
-                selector.AttributeRouteModel = selector.AttributeRouteModel == null ? 
-                    CreateActionRouteModel(areaName, controllerName, action) : 
-                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName,controllerName,action), selector.AttributeRouteModel);
+                selector.AttributeRouteModel = selector.AttributeRouteModel == null ?
+                    CreateActionRouteModel(areaName, controllerName, action) :
+                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName, controllerName, action), selector.AttributeRouteModel);
             }
         }
 
