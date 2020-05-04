@@ -199,10 +199,9 @@ namespace Panda.DynamicWebApi
 
         private void AddAppServiceSelector(string areaName, string controllerName, ActionModel action)
         {
-            var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
-
             action.ActionName = GetRestFulActionName(action.ActionName);
+
+            var verb = GetHttpVerb(action);
 
             var appServiceSelectorModel = action.Selectors[0];
 
@@ -282,15 +281,43 @@ namespace Panda.DynamicWebApi
             foreach (var selector in action.Selectors)
             {
                 selector.AttributeRouteModel = selector.AttributeRouteModel == null ?
-                    CreateActionRouteModel(areaName, controllerName, action) :
-                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName, controllerName, action), selector.AttributeRouteModel);
+                     CreateActionRouteModel(areaName, controllerName, action) :
+                     AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName, controllerName, action), selector.AttributeRouteModel);
             }
+        }
+
+        private static string GetHttpVerb(ActionModel action)
+        {
+            var getValueSuccess = AppConsts.AssemblyDynamicWebApiOptions
+                .TryGetValue(action.Controller.ControllerType.Assembly, out AssemblyDynamicWebApiOptions assemblyDynamicWebApiOptions);
+            if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicWebApiOptions?.HttpVerb))
+            {
+                return assemblyDynamicWebApiOptions.HttpVerb;
+            }
+
+
+            var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
+
+            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
+            return verb;
+        }
+
+        private static string GetApiPreFix(ActionModel action)
+        {
+            var getValueSuccess = AppConsts.AssemblyDynamicWebApiOptions
+                .TryGetValue(action.Controller.ControllerType.Assembly, out AssemblyDynamicWebApiOptions assemblyDynamicWebApiOptions);
+            if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicWebApiOptions?.ApiPrefix))
+            {
+                return assemblyDynamicWebApiOptions.ApiPrefix;
+            }
+
+            return AppConsts.DefaultApiPreFix;
         }
 
         private static AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
         {
-            var routeStr =
-                $"{AppConsts.DefaultApiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
+            var apiPreFix = GetApiPreFix(action);
+            var routeStr = $"{apiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
             return new AttributeRouteModel(new RouteAttribute(routeStr));
         }
     }
