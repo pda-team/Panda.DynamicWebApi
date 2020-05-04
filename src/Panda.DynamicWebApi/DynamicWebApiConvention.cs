@@ -245,6 +245,15 @@ namespace Panda.DynamicWebApi
         /// <returns></returns>
         private static string GetRestFulActionName(string actionName)
         {
+            // custom process action name
+            var appConstsActionName = AppConsts.GetRestFulActionName?.Invoke(actionName);
+            if (appConstsActionName != null)
+            {
+                return appConstsActionName;
+            }
+
+            // default process action name.
+
             // Remove Postfix
             actionName = actionName.RemovePostFix(AppConsts.ActionPostfixes.ToArray());
 

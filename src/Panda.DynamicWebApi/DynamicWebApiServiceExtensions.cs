@@ -34,6 +34,7 @@ namespace Panda.DynamicWebApi
             AppConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
             AppConsts.ActionPostfixes = options.RemoveActionPostfixes;
             AppConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
+            AppConsts.GetRestFulActionName = options.GetRestFulActionName;
 
             var partManager = services.GetSingletonInstanceOrNull<ApplicationPartManager>();
 
