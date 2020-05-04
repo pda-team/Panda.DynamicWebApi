@@ -1,6 +1,7 @@
 ﻿using Panda.DynamicWebApi.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Panda.DynamicWebApi
 {
@@ -20,6 +21,8 @@ namespace Panda.DynamicWebApi
         public static Dictionary<string,string> HttpVerbs { get; set; }
 
         public static Func<string, string> GetRestFulActionName { get; set; }
+
+        public static Dictionary<Assembly, AssemblyDynamicWebApiOptions> AssemblyDynamicWebApiOptions { get; set; }
 
         static AppConsts()
         {
