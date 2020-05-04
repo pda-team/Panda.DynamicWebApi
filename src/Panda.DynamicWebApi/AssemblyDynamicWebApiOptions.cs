@@ -8,7 +8,7 @@
         /// <summary>
         /// Routing prefix for all APIs
         /// <para></para>
-        /// Default value is "api".
+        /// Default value is null.
         /// </summary>
         public string ApiPrefix { get; }
 
@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="apiPrefix">Routing prefix for all APIs</param>
         /// <param name="httpVerb">API HTTP Verb.</param>
-        public AssemblyDynamicWebApiOptions(string apiPrefix = "api", string httpVerb = null)
+        public AssemblyDynamicWebApiOptions(string apiPrefix = null, string httpVerb = null)
         {
             ApiPrefix = apiPrefix;
             HttpVerb = httpVerb;
