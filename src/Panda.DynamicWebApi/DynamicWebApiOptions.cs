@@ -100,7 +100,7 @@ namespace Panda.DynamicWebApi
         /// <param name="assembly"></param>
         /// <param name="apiPreFix"></param>
         /// <param name="httpVerb"></param>
-        public void AddAssembly(Assembly assembly, string apiPreFix = null, string httpVerb = null)
+        public void AddAssemblyOptions(Assembly assembly, string apiPreFix = null, string httpVerb = null)
         {
             if (assembly == null)
             {
