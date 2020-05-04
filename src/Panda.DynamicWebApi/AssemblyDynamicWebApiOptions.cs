@@ -15,7 +15,7 @@
         /// <summary>
         /// API HTTP Verb.
         /// <para></para>
-        /// Default value is "POST".
+        /// Default value is null.
         /// </summary>
         public string HttpVerb { get; }
 
