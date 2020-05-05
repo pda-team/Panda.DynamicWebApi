@@ -19,7 +19,7 @@ namespace Panda.DynamicWebApi
         /// <param name="services"></param>
         /// <param name="options">configuration</param>
         /// <returns></returns>
-        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services,DynamicWebApiOptions options)
+        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services, DynamicWebApiOptions options)
         {
             if (options == null)
             {
@@ -34,6 +34,8 @@ namespace Panda.DynamicWebApi
             AppConsts.ControllerPostfixes = options.RemoveControllerPostfixes;
             AppConsts.ActionPostfixes = options.RemoveActionPostfixes;
             AppConsts.FormBodyBindingIgnoredTypes = options.FormBodyBindingIgnoredTypes;
+            AppConsts.GetRestFulActionName = options.GetRestFulActionName;
+            AppConsts.AssemblyDynamicWebApiOptions = options.AssemblyDynamicWebApiOptions;
 
             var partManager = services.GetSingletonInstanceOrNull<ApplicationPartManager>();
 
@@ -48,7 +50,7 @@ namespace Panda.DynamicWebApi
             services.Configure<MvcOptions>(o =>
             {
                 // Register Controller Routing Information Converter
-                o.Conventions.Add(new DynamicWebApiConvention(services));
+                o.Conventions.Add(new DynamicWebApiConvention());
             });
 
             return services;
@@ -57,6 +59,15 @@ namespace Panda.DynamicWebApi
         public static IServiceCollection AddDynamicWebApi(this IServiceCollection services)
         {
             return AddDynamicWebApi(services, new DynamicWebApiOptions());
+        }
+
+        public static IServiceCollection AddDynamicWebApi(this IServiceCollection services, Action<DynamicWebApiOptions> optionsAction)
+        {
+            var dynamicWebApiOptions = new DynamicWebApiOptions();
+
+            optionsAction?.Invoke(dynamicWebApiOptions);
+
+            return AddDynamicWebApi(services, dynamicWebApiOptions);
         }
 
     }

@@ -13,13 +13,8 @@ using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi
 {
-    public class DynamicWebApiConvention: IApplicationModelConvention
+    public class DynamicWebApiConvention : IApplicationModelConvention
     {
-        private readonly IServiceCollection _services;
-        public DynamicWebApiConvention(IServiceCollection services)
-        {
-            this._services = services;
-        }
 
         public void Apply(ApplicationModel application)
         {
@@ -41,11 +36,11 @@ namespace Panda.DynamicWebApi
                         ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                     }
                 }
-               
+
             }
         }
 
-        private void ConfigureArea(ControllerModel controller,DynamicWebApiAttribute attr)
+        private void ConfigureArea(ControllerModel controller, DynamicWebApiAttribute attr)
         {
             if (attr == null)
             {
@@ -113,7 +108,7 @@ namespace Panda.DynamicWebApi
 
                 foreach (var actionConstraint in selector.ActionConstraints)
                 {
-                    
+
                     var httpMethodActionConstraint = actionConstraint as HttpMethodActionConstraint;
                     if (httpMethodActionConstraint == null)
                     {
@@ -178,7 +173,7 @@ namespace Panda.DynamicWebApi
 
             foreach (var action in controller.Actions)
             {
-                ConfigureSelector(areaName,controller.ControllerName, action);
+                ConfigureSelector(areaName, controller.ControllerName, action);
             }
         }
 
@@ -192,26 +187,25 @@ namespace Panda.DynamicWebApi
                 return;
             }
 
-            if (action.Selectors.IsNullOrEmpty()||action.Selectors.Any(a=>a.ActionConstraints.IsNullOrEmpty()))
+            if (action.Selectors.IsNullOrEmpty() || action.Selectors.Any(a => a.ActionConstraints.IsNullOrEmpty()))
             {
-                AddAppServiceSelector(areaName,controllerName, action);
+                AddAppServiceSelector(areaName, controllerName, action);
             }
             else
             {
-                NormalizeSelectorRoutes(areaName,controllerName, action);
+                NormalizeSelectorRoutes(areaName, controllerName, action);
             }
         }
 
         private void AddAppServiceSelector(string areaName, string controllerName, ActionModel action)
         {
-            var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
-
             action.ActionName = GetRestFulActionName(action.ActionName);
 
-            var appServiceSelectorModel= action.Selectors[0];
+            var verb = GetHttpVerb(action);
 
-            if (appServiceSelectorModel.AttributeRouteModel==null)
+            var appServiceSelectorModel = action.Selectors[0];
+
+            if (appServiceSelectorModel.AttributeRouteModel == null)
             {
                 appServiceSelectorModel.AttributeRouteModel = CreateActionRouteModel(areaName, controllerName, action);
             }
@@ -238,7 +232,7 @@ namespace Panda.DynamicWebApi
                 }
             }
 
-            
+
         }
 
 
@@ -250,6 +244,15 @@ namespace Panda.DynamicWebApi
         /// <returns></returns>
         private static string GetRestFulActionName(string actionName)
         {
+            // custom process action name
+            var appConstsActionName = AppConsts.GetRestFulActionName?.Invoke(actionName);
+            if (appConstsActionName != null)
+            {
+                return appConstsActionName;
+            }
+
+            // default process action name.
+
             // Remove Postfix
             actionName = actionName.RemovePostFix(AppConsts.ActionPostfixes.ToArray());
 
@@ -277,16 +280,44 @@ namespace Panda.DynamicWebApi
             action.ActionName = GetRestFulActionName(action.ActionName);
             foreach (var selector in action.Selectors)
             {
-                selector.AttributeRouteModel = selector.AttributeRouteModel == null ? 
-                    CreateActionRouteModel(areaName, controllerName, action) : 
-                    AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName,controllerName,action), selector.AttributeRouteModel);
+                selector.AttributeRouteModel = selector.AttributeRouteModel == null ?
+                     CreateActionRouteModel(areaName, controllerName, action) :
+                     AttributeRouteModel.CombineAttributeRouteModel(CreateActionRouteModel(areaName, controllerName, action), selector.AttributeRouteModel);
             }
+        }
+
+        private static string GetHttpVerb(ActionModel action)
+        {
+            var getValueSuccess = AppConsts.AssemblyDynamicWebApiOptions
+                .TryGetValue(action.Controller.ControllerType.Assembly, out AssemblyDynamicWebApiOptions assemblyDynamicWebApiOptions);
+            if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicWebApiOptions?.HttpVerb))
+            {
+                return assemblyDynamicWebApiOptions.HttpVerb;
+            }
+
+
+            var verbKey = action.ActionName.GetPascalOrCamelCaseFirstWord().ToLower();
+
+            var verb = AppConsts.HttpVerbs.ContainsKey(verbKey) ? AppConsts.HttpVerbs[verbKey] : AppConsts.DefaultHttpVerb;
+            return verb;
+        }
+
+        private static string GetApiPreFix(ActionModel action)
+        {
+            var getValueSuccess = AppConsts.AssemblyDynamicWebApiOptions
+                .TryGetValue(action.Controller.ControllerType.Assembly, out AssemblyDynamicWebApiOptions assemblyDynamicWebApiOptions);
+            if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicWebApiOptions?.ApiPrefix))
+            {
+                return assemblyDynamicWebApiOptions.ApiPrefix;
+            }
+
+            return AppConsts.DefaultApiPreFix;
         }
 
         private static AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
         {
-            var routeStr =
-                $"{AppConsts.DefaultApiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
+            var apiPreFix = GetApiPreFix(action);
+            var routeStr = $"{apiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
             return new AttributeRouteModel(new RouteAttribute(routeStr));
         }
     }
