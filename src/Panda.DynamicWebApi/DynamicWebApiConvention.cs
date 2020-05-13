@@ -199,9 +199,10 @@ namespace Panda.DynamicWebApi
 
         private void AddAppServiceSelector(string areaName, string controllerName, ActionModel action)
         {
-            action.ActionName = GetRestFulActionName(action.ActionName);
 
             var verb = GetHttpVerb(action);
+
+            action.ActionName = GetRestFulActionName(action.ActionName);
 
             var appServiceSelectorModel = action.Selectors[0];
 

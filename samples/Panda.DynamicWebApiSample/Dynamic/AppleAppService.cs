@@ -80,7 +80,6 @@ namespace Panda.DynamicWebApiSample.Dynamic
         /// Update Apple
         /// </summary>
         /// <param name="dto"></param>
-        [HttpPut]
         public void Update(UpdateAppleDto dto)
         {
             if (Apples.ContainsKey(dto.Id))
