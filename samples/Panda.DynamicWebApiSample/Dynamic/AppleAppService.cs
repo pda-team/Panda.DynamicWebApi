@@ -76,11 +76,15 @@ namespace Panda.DynamicWebApiSample.Dynamic
             return Apples.Values;
         }
 
+        /// <summary>
+        /// Update Apple
+        /// </summary>
+        /// <param name="dto"></param>
         public void Update(UpdateAppleDto dto)
         {
             if (Apples.ContainsKey(dto.Id))
             {
-                Apples[dto.Id] =dto.Name;
+                Apples[dto.Id] = dto.Name;
             }
         }
 
