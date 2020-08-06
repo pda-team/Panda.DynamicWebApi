@@ -84,7 +84,43 @@ public class AppleAppService: IDynamicWebApi
 ````csharp
 public void ConfigureServices(IServiceCollection services)
 {
+    // 默认配置
     services.AddDynamicWebApi();
+
+    // 自定义配置
+    services.AddDynamicWebApi((options) =>
+    {
+        // 指定全局默认的 api 前缀
+        options.DefaultApiPrefix = "apis";
+    
+        /**
+         * 清空API结尾，不删除API结尾;
+         * 若不清空 CreatUserAsync 将变为 CreateUser
+         */
+        options.RemoveActionPostfixes.Clear();
+    
+        /**
+         * 自定义 ActionName 处理函数;
+         */
+        options.GetRestFulActionName = (actionName) => actionName;
+    
+        /**
+         * 指定程序集 配置 url 前缀为 apis
+         * 如: http://localhost:8080/apis/User/CreateUser
+         */
+        options.AddAssemblyOptions(this.GetType().Assembly, apiPreFix: "apis");
+    
+        /**
+         * 指定程序集 配置所有的api请求方式都为 POST
+         */
+        options.AddAssemblyOptions(this.GetType().Assembly, httpVerb: "POST");
+    
+        /**
+         * 指定程序集 配置 url 前缀为 apis, 且所有请求方式都为POST
+         * 如: http://localhost:8080/apis/User/CreateUser
+         */
+        options.AddAssemblyOptions(this.GetType().Assembly, apiPreFix: "apis", httpVerb: "POST");
+    });
 }
 ````
 
