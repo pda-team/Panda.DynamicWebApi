@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\version.props" />
+  
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <IsPackable>true</IsPackable>
     <Description>ASP.NET Core Dynamic Restful WebApi. Generating WebApi from Classes. Such as: Direct Generation of WebApi Based on Business Logic Layer.</Description>
     <PackageLicenseExpression></PackageLicenseExpression>
@@ -10,7 +15,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>ASP.NET Core,Dynamic,WebApi</PackageTags>
     <Authors>stulzq,staneee</Authors>
-    <Version>1.0.6</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes>Support Endpoint Route.</PackageReleaseNotes>
   </PropertyGroup>
