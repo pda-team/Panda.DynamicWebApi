@@ -1,0 +1,37 @@
+name: "build and publish to nuget"
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    # set os
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout souce code
+      - uses: actions/checkout@v2
+
+      # install dotnet sdk
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
+
+      # build nuget packages
+      - name: build_nuget_packages
+        run: ./pack.ps1
+        shell: pwsh
+        working-directory: ./nupkg
+            
+      # publish to nuget
+      - name: publish_to_nuget
+        env:
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+        run: ./push_packages.ps1
+        shell: pwsh
+        working-directory: ./nupkg

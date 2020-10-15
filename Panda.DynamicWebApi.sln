@@ -14,8 +14,24 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{053F6381-4E5B-4D5E-9A23-1E914AA033DD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		global.json = global.json
 		README.md = README.md
 		README_zh-CN.md = README_zh-CN.md
+		version.props = version.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{808F59BE-31D7-4BC1-81F8-454BF9BB43EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{E871DB62-B840-4421-8875-A7FEB72B7537}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build_and_publish_nuget.yml = .github\workflows\build_and_publish_nuget.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nupkg", "nupkg", "{24E0E36B-2B3E-48DC-8C6E-7FA81F4910ED}"
+	ProjectSection(SolutionItems) = preProject
+		nupkg\common.ps1 = nupkg\common.ps1
+		nupkg\pack.ps1 = nupkg\pack.ps1
+		nupkg\push_packages.ps1 = nupkg\push_packages.ps1
 	EndProjectSection
 EndProject
 Global
@@ -39,6 +55,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{08AA6AB6-3A60-4806-892C-25248B11FBE3} = {1F23CF3B-77BD-4D65-867B-31F6ADD54789}
 		{4E1F3A34-9AE4-41A4-AA9A-36F3B63A08A2} = {2892E206-E3D4-479E-9BA3-AD636839CA9B}
+		{808F59BE-31D7-4BC1-81F8-454BF9BB43EC} = {053F6381-4E5B-4D5E-9A23-1E914AA033DD}
+		{E871DB62-B840-4421-8875-A7FEB72B7537} = {808F59BE-31D7-4BC1-81F8-454BF9BB43EC}
+		{24E0E36B-2B3E-48DC-8C6E-7FA81F4910ED} = {053F6381-4E5B-4D5E-9A23-1E914AA033DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF8BD8DF-F990-49F9-B5FE-7003FC8A139E}
