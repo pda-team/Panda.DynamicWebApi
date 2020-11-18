@@ -3,7 +3,7 @@
   <Import Project="..\..\version.props" />
   
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,6 +17,8 @@
     <Authors>stulzq,staneee</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes>Support Endpoint Route.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
