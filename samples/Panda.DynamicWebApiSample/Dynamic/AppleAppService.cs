@@ -53,6 +53,7 @@ namespace Panda.DynamicWebApiSample.Dynamic
         /// Get  All Apple Async.
         /// </summary>
         /// <returns></returns>
+        //[NonDynamicMethod]
         public IEnumerable<string> GetAllAsync()
         {
             return Apples.Values;
