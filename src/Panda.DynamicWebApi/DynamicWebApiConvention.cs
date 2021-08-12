@@ -13,8 +13,48 @@ using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi
 {
+    public interface ISelectController
+    {
+        bool IsController(Type type);
+    }
+
+    internal class DefaultSelectController : ISelectController
+    {
+        public bool IsController(Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+
+            if (!typeof(IDynamicWebApi).IsAssignableFrom(type) ||
+                !typeInfo.IsPublic || typeInfo.IsAbstract || typeInfo.IsGenericType)
+            {
+                return false;
+            }
+
+
+            var attr = ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<DynamicWebApiAttribute>(typeInfo);
+
+            if (attr == null)
+            {
+                return false;
+            }
+
+            if (ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<NonDynamicWebApiAttribute>(typeInfo) != null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public class DynamicWebApiConvention : IApplicationModelConvention
     {
+        private readonly ISelectController _selectController;
+
+        public DynamicWebApiConvention(ISelectController selectController)
+        {
+            _selectController = selectController;
+        }
 
         public void Apply(ApplicationModel application)
         {
@@ -22,33 +62,41 @@ namespace Panda.DynamicWebApi
             {
                 var type = controller.ControllerType.AsType();
                 var dynamicWebApiAttr = ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<DynamicWebApiAttribute>(type.GetTypeInfo());
-                if (typeof(IDynamicWebApi).GetTypeInfo().IsAssignableFrom(type))
+
+                if (!(_selectController is DefaultSelectController) && _selectController.IsController(type))
                 {
                     controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
-                    ConfigureArea(controller, dynamicWebApiAttr);
                     ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                 }
                 else
                 {
-                    if (dynamicWebApiAttr != null)
+                    if (typeof(IDynamicWebApi).GetTypeInfo().IsAssignableFrom(type))
                     {
+                        controller.ControllerName = controller.ControllerName.RemovePostFix(AppConsts.ControllerPostfixes.ToArray());
                         ConfigureArea(controller, dynamicWebApiAttr);
                         ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
                     }
+                    else
+                    {
+                        if (dynamicWebApiAttr != null)
+                        {
+                            ConfigureArea(controller, dynamicWebApiAttr);
+                            ConfigureDynamicWebApi(controller, dynamicWebApiAttr);
+                        }
+                    }
                 }
-
             }
         }
 
         private void ConfigureArea(ControllerModel controller, DynamicWebApiAttribute attr)
         {
-            if (attr == null)
-            {
-                throw new ArgumentException(nameof(attr));
-            }
-
             if (!controller.RouteValues.ContainsKey("area"))
             {
+                if (attr == null)
+                {
+                    throw new ArgumentException(nameof(attr));
+                }
+
                 if (!string.IsNullOrEmpty(attr.Module))
                 {
                     controller.RouteValues["area"] = attr.Module;

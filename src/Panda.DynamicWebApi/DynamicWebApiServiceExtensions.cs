@@ -45,12 +45,12 @@ namespace Panda.DynamicWebApi
             }
 
             // Add a custom controller checker
-            partManager.FeatureProviders.Add(new DynamicWebApiControllerFeatureProvider());
+            partManager.FeatureProviders.Add(new DynamicWebApiControllerFeatureProvider(options.SelectController));
 
             services.Configure<MvcOptions>(o =>
             {
                 // Register Controller Routing Information Converter
-                o.Conventions.Add(new DynamicWebApiConvention());
+                o.Conventions.Add(new DynamicWebApiConvention(options.SelectController));
             });
 
             return services;

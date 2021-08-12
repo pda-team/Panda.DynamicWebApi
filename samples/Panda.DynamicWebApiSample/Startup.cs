@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Panda.DynamicWebApi;
+using Panda.DynamicWebApiSample.Dynamic;
 
 namespace Panda.DynamicWebApiSample
 {
@@ -50,7 +51,10 @@ namespace Panda.DynamicWebApiSample
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Panda-Api";
                 });
-            services.AddDynamicWebApi();
+            services.AddDynamicWebApi((options)=>
+            {
+                options.SelectController = new ServiceLocalSelectController();
+            });
 
 
             // 自定义配置

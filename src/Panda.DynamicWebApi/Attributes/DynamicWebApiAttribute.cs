@@ -4,6 +4,7 @@ using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi.Attributes
 {
+
     [Serializable]
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class DynamicWebApiAttribute : Attribute
