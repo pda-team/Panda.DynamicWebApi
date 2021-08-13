@@ -13,47 +13,15 @@ using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi
 {
-    public interface ISelectController
-    {
-        bool IsController(Type type);
-    }
-
-    internal class DefaultSelectController : ISelectController
-    {
-        public bool IsController(Type type)
-        {
-            var typeInfo = type.GetTypeInfo();
-
-            if (!typeof(IDynamicWebApi).IsAssignableFrom(type) ||
-                !typeInfo.IsPublic || typeInfo.IsAbstract || typeInfo.IsGenericType)
-            {
-                return false;
-            }
-
-
-            var attr = ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<DynamicWebApiAttribute>(typeInfo);
-
-            if (attr == null)
-            {
-                return false;
-            }
-
-            if (ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<NonDynamicWebApiAttribute>(typeInfo) != null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
     public class DynamicWebApiConvention : IApplicationModelConvention
     {
         private readonly ISelectController _selectController;
+        private readonly IActionRouteFactory _actionRouteFactory;
 
-        public DynamicWebApiConvention(ISelectController selectController)
+        public DynamicWebApiConvention(ISelectController selectController, IActionRouteFactory actionRouteFactory)
         {
             _selectController = selectController;
+            _actionRouteFactory = actionRouteFactory;
         }
 
         public void Apply(ApplicationModel application)
@@ -345,7 +313,7 @@ namespace Panda.DynamicWebApi
             }
         }
 
-        private static void NormalizeSelectorRoutes(string areaName, string controllerName, ActionModel action)
+        private void NormalizeSelectorRoutes(string areaName, string controllerName, ActionModel action)
         {
             action.ActionName = GetRestFulActionName(action.ActionName);
             foreach (var selector in action.Selectors)
@@ -372,23 +340,11 @@ namespace Panda.DynamicWebApi
             return verb;
         }
 
-        private static string GetApiPreFix(ActionModel action)
+        private AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
         {
-            var getValueSuccess = AppConsts.AssemblyDynamicWebApiOptions
-                .TryGetValue(action.Controller.ControllerType.Assembly, out AssemblyDynamicWebApiOptions assemblyDynamicWebApiOptions);
-            if (getValueSuccess && !string.IsNullOrWhiteSpace(assemblyDynamicWebApiOptions?.ApiPrefix))
-            {
-                return assemblyDynamicWebApiOptions.ApiPrefix;
-            }
+            var route =  _actionRouteFactory.CreateActionRouteModel(areaName, controllerName, action);
 
-            return AppConsts.DefaultApiPreFix;
-        }
-
-        private static AttributeRouteModel CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
-        {
-            var apiPreFix = GetApiPreFix(action);
-            var routeStr = $"{apiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
-            return new AttributeRouteModel(new RouteAttribute(routeStr));
+            return new AttributeRouteModel(new RouteAttribute(route));
         }
     }
 }

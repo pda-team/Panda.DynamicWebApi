@@ -54,6 +54,7 @@ namespace Panda.DynamicWebApiSample
             services.AddDynamicWebApi((options)=>
             {
                 options.SelectController = new ServiceLocalSelectController();
+                options.ActionRouteFactory = new ServiceActionRouteFactory();
             });
 
 

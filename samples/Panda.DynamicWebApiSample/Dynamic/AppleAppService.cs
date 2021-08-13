@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,33 +9,6 @@ using Panda.DynamicWebApiSample.Dtos;
 
 namespace Panda.DynamicWebApiSample.Dynamic
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute:Attribute
-    {
-
-    }
-
-    internal class ServiceLocalSelectController : ISelectController
-    {
-        public bool IsController(Type type)
-        {
-            return type.IsPublic && type.GetCustomAttribute<ServiceAttribute>() != null;
-        }
-    }
-
-    [Service]
-    public class MyService
-    {
-        public int Show()
-        {
-            return 100;
-        }
-
-        public Task<int> TaskIntAsync()
-        {
-            return Task.FromResult(100);
-        }
-    }
 
     [DynamicWebApi]
     // [Authorize]

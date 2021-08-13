@@ -50,7 +50,7 @@ namespace Panda.DynamicWebApi
             services.Configure<MvcOptions>(o =>
             {
                 // Register Controller Routing Information Converter
-                o.Conventions.Add(new DynamicWebApiConvention(options.SelectController));
+                o.Conventions.Add(new DynamicWebApiConvention(options.SelectController, options.ActionRouteFactory));
             });
 
             return services;
