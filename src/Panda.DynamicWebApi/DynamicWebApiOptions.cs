@@ -63,6 +63,9 @@ namespace Panda.DynamicWebApi
         /// </summary>
         public Dictionary<Assembly, AssemblyDynamicWebApiOptions> AssemblyDynamicWebApiOptions { get; }
 
+        public ISelectController SelectController { get; set; } = new DefaultSelectController();
+        public IActionRouteFactory ActionRouteFactory { get; set; } = new DefaultActionRouteFactory();
+
         /// <summary>
         /// Verify that all configurations are valid
         /// </summary>

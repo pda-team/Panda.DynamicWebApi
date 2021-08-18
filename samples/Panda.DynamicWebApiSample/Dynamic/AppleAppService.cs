@@ -9,6 +9,7 @@ using Panda.DynamicWebApiSample.Dtos;
 
 namespace Panda.DynamicWebApiSample.Dynamic
 {
+
     [DynamicWebApi]
     // [Authorize]
     public class AppleAppService: IDynamicWebApi
