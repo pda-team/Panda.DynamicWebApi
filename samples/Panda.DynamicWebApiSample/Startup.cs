@@ -9,9 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
+using Other.Controller;
 using Panda.DynamicWebApi;
 using Panda.DynamicWebApiSample.Dynamic;
+using ServiceAbsAttribute;
 
 namespace Panda.DynamicWebApiSample
 {
@@ -51,11 +52,8 @@ namespace Panda.DynamicWebApiSample
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Panda-Api";
                 });
-            services.AddDynamicWebApi((options)=>
-            {
-                options.SelectController = new ServiceLocalSelectController();
-                options.ActionRouteFactory = new ServiceActionRouteFactory();
-            });
+
+            //services.AddPandaWebApiForSwagger();
 
 
             // 自定义配置
@@ -103,6 +101,13 @@ namespace Panda.DynamicWebApiSample
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDynamicWebApi((serviceProvider,options) =>
+            {
+                options.AddAssemblyOptions(typeof(OtherService).Assembly);
+                options.SelectController = new ServiceLocalSelectController();
+                options.ActionRouteFactory = new ServiceActionRouteFactory();
+            });
 
             app.UseRouting();
             app.UseAuthentication();

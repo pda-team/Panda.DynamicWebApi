@@ -1,26 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Other.Controller;
 using Panda.DynamicWebApi;
+using ServiceAbsAttribute;
 using System;
 using System.Reflection;
 
 namespace Panda.DynamicWebApiSample.Dynamic
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ServiceAttribute:Attribute
-    {
-        public ServiceAttribute()
-        {
-            ServiceName = string.Empty;
-        }
-
-        public ServiceAttribute(string serviceName)
-        {
-            ServiceName = serviceName;
-        }
-
-        public string ServiceName { get; }
-    }
-
     internal class ServiceActionRouteFactory : IActionRouteFactory
     {
         public string CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
