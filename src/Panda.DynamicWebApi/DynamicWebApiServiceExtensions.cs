@@ -41,13 +41,9 @@ namespace Panda.DynamicWebApi
 
             var partManager = application.ApplicationServices.GetRequiredService<ApplicationPartManager>();
 
-            if (partManager == null)
-            {
-                throw new InvalidOperationException("\"UseDynamicWebApi\" must be after \"AddMvc\".");
-            }
-
             // Add a custom controller checker
-            partManager.FeatureProviders.Add(new DynamicWebApiControllerFeatureProvider(options.SelectController));
+            var featureProviders = application.ApplicationServices.GetRequiredService<DynamicWebApiControllerFeatureProvider>();
+            partManager.FeatureProviders.Add(featureProviders);
 
             foreach(var assembly in options.AssemblyDynamicWebApiOptions.Keys)
             {
@@ -61,10 +57,22 @@ namespace Panda.DynamicWebApi
 
 
             var mvcOptions = application.ApplicationServices.GetRequiredService<IOptions<MvcOptions>>();
+            var dynamicWebApiConvention = application.ApplicationServices.GetRequiredService<DynamicWebApiConvention>();
 
-            mvcOptions.Value.Conventions.Add(new DynamicWebApiConvention(options.SelectController, options.ActionRouteFactory));
+            mvcOptions.Value.Conventions.Add(dynamicWebApiConvention);
 
             return application;
+        }
+
+        public static IServiceCollection AddDynamicWebApiCore<TSelectController, TActionRouteFactory>(this IServiceCollection services)
+            where TSelectController: class,ISelectController
+            where TActionRouteFactory: class, IActionRouteFactory
+        {
+            services.AddSingleton<ISelectController, TSelectController>();
+            services.AddSingleton<IActionRouteFactory, TActionRouteFactory>();
+            services.AddSingleton<DynamicWebApiConvention>();
+            services.AddSingleton<DynamicWebApiControllerFeatureProvider>();
+            return services;
         }
 
         /// <summary>

@@ -91,7 +91,7 @@ namespace Panda.DynamicWebApiSample
             //    options.AddAssemblyOptions(this.GetType().Assembly, apiPreFix: "apis", httpVerb: "POST");
             //});
 
-
+            services.AddDynamicWebApiCore<ServiceLocalSelectController, ServiceActionRouteFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,8 +105,6 @@ namespace Panda.DynamicWebApiSample
             app.UseDynamicWebApi((serviceProvider,options) =>
             {
                 options.AddAssemblyOptions(typeof(OtherService).Assembly);
-                options.SelectController = new ServiceLocalSelectController();
-                options.ActionRouteFactory = new ServiceActionRouteFactory();
             });
 
             app.UseRouting();

@@ -173,6 +173,109 @@ public void ConfigureServices(IServiceCollection services)
 ...
 
 （9）`[DynamicWebApi]` 特性因为可被继承，所以为了父类被误识别，禁止放在除抽象类、接口以外的父类上。
+（10）自定义 WebApi注册
+### 1.基础功能
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    // 自定义配置
+    services.AddDynamicWebApi((options) =>
+    {
+        //自定义注册的WebApi
+        options.SelectController = new ServiceLocalSelectController();
+        //自定义WebApi路由地址
+        options.ActionRouteFactory = new ServiceActionRouteFactory();
+    });
+}
+```
+
+根据 ServiceAttribute 注册WebApi和分配路由地址
+```csharp
+[AttributeUsage(AttributeTargets.Class)]
+public class ServiceAttribute : Attribute
+{
+    public ServiceAttribute()
+    {
+        ServiceName = string.Empty;
+    }
+
+    public ServiceAttribute(string serviceName)
+    {
+        ServiceName = serviceName;
+    }
+
+    public string ServiceName { get; }
+}
+```
+
+实现 ISelectController 接口，通过查找类是否有ServiceAttribute特性为注册WebApi条件
+```csharp
+internal class ServiceLocalSelectController : ISelectController
+{
+    public bool IsController(Type type)
+    {
+        return type.IsPublic && type.GetCustomAttribute<ServiceAttribute>() != null;
+    }
+}
+```
+
+实现 IActionRouteFactory 接口，生成路由规则 /api/ServiceName/Method
+```csharp
+internal class ServiceActionRouteFactory : IActionRouteFactory
+{
+    public string CreateActionRouteModel(string areaName, string controllerName, ActionModel action)
+    {
+        var controllerType = action.ActionMethod.DeclaringType;
+        var serviceAttribute = controllerType.GetCustomAttribute<ServiceAttribute>();
+
+        var _controllerName = serviceAttribute.ServiceName == string.Empty ? controllerName.Replace("Service", "") : serviceAttribute.ServiceName.Replace("Service", "");
+
+        return $"api/{_controllerName}/{action.ActionName.Replace("Async", "")}";
+    }
+}
+```
+ServiceAttribute.ServiceName为空时，controllerName 替换 "Service" 字符串为空，反之则 ServiceAttribute.ServiceName 替换 "Service" 字符串为空。
+Method 名替换 "Async" 字符串为空。
+
+### 2.外部动态 WebApi
+创建一个 Other.Controller
+实现 一个外部 Service
+```csharp
+[Service("Other.Server")]
+public class OtherService
+{
+    public int Show()
+    {
+        return 100;
+    }
+
+    public Task<int> TaskIntAsync()
+    {
+        return Task.FromResult(100);
+    }
+}
+```
+
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    // 自定义配置
+    services.AddDynamicWebApiCore<ServiceLocalSelectController, ServiceActionRouteFactory>();
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+
+    app.UseDynamicWebApi((serviceProvider,options) =>
+    {
+        options.AddAssemblyOptions(typeof(OtherService).Assembly);
+    });
+}
+```
 
 ## 3.配置
 
@@ -183,8 +286,8 @@ public void ConfigureServices(IServiceCollection services)
 | DefaultHttpVerb             | 否       | 默认值：POST。默认HTTP动词                                |
 | DefaultAreaName             | 否       | 默认值：空。Area 路由名称                                 |
 | DefaultApiPrefix            | 否       | 默认值：api。API路由前缀                                  |
-| RemoveControllerPostfixes          | 否       | 默认值：AppService/ApplicationService。类名需要移除的后缀 |
-| RemoveActionPostfixes          | 否       | 默认值：Async。方法名需要移除的后缀 |
+| RemoveControllerPostfixes   | 否       | 默认值：AppService/ApplicationService。类名需要移除的后缀 |
+| RemoveActionPostfixes       | 否       | 默认值：Async。方法名需要移除的后缀                       |
 | FormBodyBindingIgnoredTypes | 否       | 默认值：IFormFile。不通过MVC绑定到参数列表的类型。        |
 
 ## 4.疑难解答
