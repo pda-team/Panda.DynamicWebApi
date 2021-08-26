@@ -1,11 +1,11 @@
-﻿using Other.Controller;
-using ServiceAbsAttribute;
+﻿using ServiceAbsAttribute;
+using System;
 using System.Threading.Tasks;
 
-namespace Panda.DynamicWebApiSample.Dynamic
+namespace Other.Controller
 {
-    [Service("My.Server")]
-    public class MyService
+    [Service("Other.Server")]
+    public class OtherService
     {
         public int Show()
         {

@@ -9,9 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
+using Other.Controller;
 using Panda.DynamicWebApi;
 using Panda.DynamicWebApiSample.Dynamic;
+using ServiceAbsAttribute;
 
 namespace Panda.DynamicWebApiSample
 {
@@ -51,11 +52,8 @@ namespace Panda.DynamicWebApiSample
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Panda-Api";
                 });
-            services.AddDynamicWebApi((options)=>
-            {
-                options.SelectController = new ServiceLocalSelectController();
-                options.ActionRouteFactory = new ServiceActionRouteFactory();
-            });
+
+            //services.AddPandaWebApiForSwagger();
 
 
             // 自定义配置
@@ -93,7 +91,7 @@ namespace Panda.DynamicWebApiSample
             //    options.AddAssemblyOptions(this.GetType().Assembly, apiPreFix: "apis", httpVerb: "POST");
             //});
 
-
+            services.AddDynamicWebApiCore<ServiceLocalSelectController, ServiceActionRouteFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,6 +101,11 @@ namespace Panda.DynamicWebApiSample
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDynamicWebApi((serviceProvider,options) =>
+            {
+                options.AddAssemblyOptions(typeof(OtherService).Assembly);
+            });
 
             app.UseRouting();
             app.UseAuthentication();
