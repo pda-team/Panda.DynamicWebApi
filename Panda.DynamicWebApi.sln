@@ -33,9 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nupkg", "nupkg", "{24E0E36B
 		nupkg\push_packages.ps1 = nupkg\push_packages.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Other.Controller", "Other.Controller\Other.Controller.csproj", "{9C5DBF00-F938-4C04-BF21-A4D1F852574F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Other.Controller", "samples\Other.Controller\Other.Controller.csproj", "{9C5DBF00-F938-4C04-BF21-A4D1F852574F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAbsAttribute", "Service.Attribute\ServiceAbsAttribute.csproj", "{B7E08632-5B70-4008-B273-86D2A936B4DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAbsAttribute", "samples\Service.Attribute\ServiceAbsAttribute.csproj", "{B7E08632-5B70-4008-B273-86D2A936B4DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +70,7 @@ Global
 		{E871DB62-B840-4421-8875-A7FEB72B7537} = {808F59BE-31D7-4BC1-81F8-454BF9BB43EC}
 		{24E0E36B-2B3E-48DC-8C6E-7FA81F4910ED} = {053F6381-4E5B-4D5E-9A23-1E914AA033DD}
 		{B7E08632-5B70-4008-B273-86D2A936B4DE} = {2892E206-E3D4-479E-9BA3-AD636839CA9B}
+		{9C5DBF00-F938-4C04-BF21-A4D1F852574F} = {2892E206-E3D4-479E-9BA3-AD636839CA9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF8BD8DF-F990-49F9-B5FE-7003FC8A139E}

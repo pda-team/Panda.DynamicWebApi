@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Other.Controller\Other.Controller.csproj" />
     <ProjectReference Include="..\..\src\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj" />
+    <ProjectReference Include="..\Other.Controller\Other.Controller.csproj" />
   </ItemGroup>
 
 </Project>
