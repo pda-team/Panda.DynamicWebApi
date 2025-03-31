@@ -8,6 +8,8 @@ Application Scenario: The application logic layer in the DDD architecture, which
 
 [![Latest version](https://img.shields.io/nuget/v/Panda.DynamicWebApi.svg)](https://www.nuget.org/packages/Panda.DynamicWebApi/)
 
+.NET 9.0 support coming soon.
+
 ## 1.Quick Start
 
 （1）Create a new ASP.NET Core WebApi (or MVC) project
